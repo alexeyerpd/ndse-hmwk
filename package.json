@@ -1,0 +1,29 @@
+{
+  "name": "ndse-hmwk",
+  "version": "1.0.0",
+  "description": "library app",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -r dotenv/config index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexeyerpd/ndse-hmwk.git"
+  },
+  "keywords": [],
+  "author": "Alexey P.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexeyerpd/ndse-hmwk/issues"
+  },
+  "homepage": "https://github.com/alexeyerpd/ndse-hmwk#readme",
+  "devDependencies": {
+    "dotenv": "^16.0.0",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "express-form-data": "^2.0.18",
+    "uuid": "^8.3.2"
+  }
+}
