@@ -2,6 +2,7 @@ const express = require('express');
 const os = require('os');
 const formData = require('express-form-data');
 const { Book } = require('./models');
+const { getUpdatedNewBook, sendJsonByStatus } = require('./utils');
 
 const app = express();
 
@@ -22,15 +23,6 @@ app.use(formData.format());
 app.use(formData.stream());
 app.use(formData.union());
 
-function getUpdatedNewBook(book, body) {
-    const newBook = { ...book };
-    for (let [k, v] of Object.entries(body)) {
-        if (typeof v !== 'undefined') {
-            newBook[k] = v;
-        }
-    }
-    return newBook;
-};
 
 const store = {
     books: [
@@ -39,12 +31,11 @@ const store = {
 };
 
 app.post('/api/user/login', (req, res) => {
-    res.statusCode = 201;
-    res.json({ id: 1, mail: "test@mail.ru" })
+    sendJsonByStatus(res, { id: 1, mail: "test@mail.ru" }, 201);
 });
 
 app.get('/api/books', (req, res) => {
-    res.json(store.books);
+    sendJsonByStatus(res, store.books);
 });
 
 app.get('/api/books/:id', (req, res) => {
@@ -52,12 +43,11 @@ app.get('/api/books/:id', (req, res) => {
     const book = store.books.find( item => item.id === id);
 
     if (!book) {
-        res.sendStatus = 404;
-        res.json('Code: 404');
+        sendJsonByStatus(res, null, 404);
         return;
     } 
 
-    res.json(book);
+    sendJsonByStatus(res, book);
 });
 
 app.post('/api/books', (req, res) => {
@@ -66,8 +56,7 @@ app.post('/api/books', (req, res) => {
 
     store.books.push(book);
 
-    res.statusCode = 201;
-    res.json(book);
+    sendJsonByStatus(res, book, 201);
 });
 
 app.put('/api/books/:id', (req, res) => {
@@ -75,15 +64,13 @@ app.put('/api/books/:id', (req, res) => {
     const index = store.books.findIndex((item) => item.id === id);
 
     if (index === -1) {
-        res.statusCode = 404;
-        res.json('Code: 404');
+        sendJsonByStatus(res, null, 404);
         return;
     }
 
     store.books[index] = getUpdatedNewBook(store.books[index], req.body);
 
-    res.json(store.books[index]);
-
+    sendJsonByStatus(res, store.books[index]);
 });
 
 app.delete('/api/books/:id', (req, res) => {
@@ -91,11 +78,11 @@ app.delete('/api/books/:id', (req, res) => {
     const index = store.books.findIndex((item) => item.id === id);
 
     if (index === -1) {
-        res.statusCode = 404;
-        res.json('Code: 404');
+        sendJsonByStatus(res, null, 404);
         return;
     }
 
     store.books.splice(index, 1);
-    res.json('Ok');
+
+    sendJsonByStatus(res, 'ok');
 });
