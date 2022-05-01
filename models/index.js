@@ -1,5 +1,5 @@
-const {Book} = require('./book');
+const { Book } = require('./book');
 
 module.exports = {
     Book,
-}
+};
