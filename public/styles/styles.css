@@ -1,0 +1,288 @@
+:root {
+    --font-family: "Times New Roman", sans-serif;
+    --base-font-size: 16px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.body {
+    font-family: var(--font-family);
+    font-size: var(--base-font-size);
+}
+
+.page {
+    max-height: 1280px;
+    min-height: 100vh;
+    margin: 0 auto;
+}
+
+.navigation {
+    background-color: #c9c9c9;
+}
+
+.navigation__list {
+    display: flex;
+    justify-content: center;
+}
+
+.navigation__item {
+    padding: 10px 5px;
+}
+
+.navigation__item + .navigation__item {
+    margin-left: 10px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    margin: 20px auto 0;
+}
+
+.container__title {
+    width: 100%;
+    text-align: center;
+}
+
+.books {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+
+    row-gap: 15px;
+    column-gap: 15px;
+}
+
+.books__item {
+    width: calc(100% / 3 - 10px);
+}
+
+.books__actions {
+    width: 100%;
+    margin-top: 25px;
+
+    text-align: center;
+}
+
+.book-preview {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
+    border-radius: 8px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, .3);
+    transition: transform .15s;
+}
+
+.book-preview:hover {
+    transform: scale(1.05);
+}
+
+.book-preview__favorite {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+.book-preview__img {
+    max-width: 100%;
+    height: 100%;
+}
+
+.book-preview__title {
+    margin-top: 10px;
+
+    text-align: center;
+}
+
+.book {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.book__content {
+    flex-grow: 1;
+}
+
+.book__left-bar {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 40%;
+    margin-right: 15px;
+}
+
+.book__img {
+    display: block;
+    max-width: 100%;
+}
+
+.book__actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    row-gap: 10px;
+    column-gap: 10px;
+
+    margin-top: 20px;
+}
+
+.book-create {
+    width: 60%;
+    min-width: 450px;
+    margin: 0 auto;
+}
+
+.book-create__fields {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+.book-create__field {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #c0c0c0;
+}
+
+.book-create__label {
+    display: inline-flex;
+    width: 100%;
+}
+
+.book-create__label--short {
+    width: auto;
+}
+
+.book-create__actions {
+    margin-top: 20px;
+
+    text-align: center;
+}
+
+.book-create__input {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+
+.book-create__input:not([type='file']), .book-create__textarea {
+    padding: 0 5px 2px;
+
+    flex-grow: 1;
+    margin-left: 10px;
+
+    border: none;
+    border-bottom: 1px solid #04c3fd;
+
+    font: inherit;
+
+    transition: border-bottom-color .2s;
+}
+
+.book-create__input:not([type='file']):focus,
+.book-create__input:not([type='file']):hover,
+.book-create__textarea:focus, 
+.book-create__textarea:hover {
+    border-bottom-color: #24ca24;
+}
+
+.image-preview {
+    max-width: 100%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* btns */
+.btn {
+    height: 100%;
+
+    border: none;
+    cursor: pointer;
+
+    color: #000;
+    
+    font: inherit;
+
+    background-color: transparent;
+}
+
+.btn-link, .btn {
+    display: inline-flex;
+    padding: 10px 15px;
+    
+    border-radius: 8px;
+    
+    transition: background-color .1s;
+}
+
+.btn-link {
+    background-color: #53e0d2;
+}
+
+.btn-link--download {
+    background-color: #62abc9;
+}
+
+.btn-link:hover {
+    background-color: #38c6b8;
+}
+
+.btn-link--download:hover {
+    background-color: #69c1e3;
+}
+
+.btn--delete {
+    background-color: #f91010;
+}
+
+.btn-form--delete {
+    margin-left: auto;
+}
+
+.btn--delete:hover {
+    background-color: #c70808;
+} 
+
+.btn--submit {
+    background-color: #04c3fd;
+}
+
+.btn--submit:hover {
+    background-color: #079ac7;
+} 
+
+.btn-link:active, .btn:active {
+    transform: translateY(1px);
+}
+
+.btn--favorite {
+    width: 24px;
+    height: 24px;
+    background-color: #b5b6b7;
+    border-radius: 0;
+}
+
+.btn--favorite-yes {
+    background-color: #ecd032;
+}
+
+.book__favorite {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    width: 24px;
+    height: 24px;
+    background-color: #b5b6b7;
+}
+
+.book__favorite--yes {
+    background-color: #ecd032;
+}

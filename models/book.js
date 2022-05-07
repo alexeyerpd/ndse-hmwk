@@ -2,22 +2,23 @@ const uuid = require('uuid').v4;
 
 class Book {
     constructor(
-        title,
-        description,
-        authors,
-        fileName,
-        fileBook,
-        fileCover,
+        title = '',
+        description = '',
+        authors = '',
+        favorite = false,
+        fileName = '',
+        fileBook = '',
+        fileCover = '',
         id = uuid(),
     ) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.authors = authors;
-        this.favorite = false;
-        this.fileName = fileName ?? '';
-        this.fileBook = fileBook ?? '';
-        this.fileCover = fileCover ?? '';
+        this.favorite = favorite;
+        this.fileName = fileName;
+        this.fileBook = fileBook;
+        this.fileCover = fileCover;
     }
 }
 

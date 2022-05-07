@@ -1,7 +1,9 @@
-const booksRouter = require('./books.js');
-const userRouter = require('./user.js');
+const express = require('express');
 
-module.exports = {
-    booksRouter,
-    userRouter,
-};
+const router = express.Router();
+
+router.get('/', (req, res) => {
+    res.render('index', { title: 'Главная' });
+});
+
+module.exports = router;

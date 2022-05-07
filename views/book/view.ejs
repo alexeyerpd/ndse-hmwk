@@ -1,0 +1,16 @@
+<div class="book">
+    <div class="book__left-bar">
+        <img class="book__img" src="/<%= book.fileCover %>" alt="image">
+        <div class="book__actions">
+            <%- include('../buttons/index.ejs', { type: 'download', text: 'Скачать книгу', href: `/${book.fileBook}` }) %> 
+            <%- include('../buttons/index.ejs', { type: 'edit', text: 'Редактировать', id: book.id }) %> 
+            <%- include('../buttons/index.ejs', { type: 'delete', text: 'Удалить', id: book.id }) %> 
+        </div>
+    </div>
+    <div class="book__content">
+        <h2 class="book__title"><%= book.title %></h2>
+        <p class="book__description"><%= book.description %></p>
+        <author class="book__author"><%= book.authors %></author>
+    </div>
+    <div class="book__favorite <%= book.favorite ? 'book__favorite--yes' : '' %>"></div>
+</div>

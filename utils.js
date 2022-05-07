@@ -1,4 +1,13 @@
-const { ERROR_MESSAGES_DICT } = require("./constants");
+const { ERROR_MESSAGES_DICT } = require('./constants');
+
+function compareCurrentBookWithBody(book, body) {
+    if (Object.keys(body).length) {
+        return Object.entries(body).filter(
+            ([fieldK, fieldV]) => book[fieldK] !== fieldV,
+        );
+    }
+    return [];
+}
 
 function getUpdatedNewBook(book, body) {
     const newBook = { ...book };
@@ -8,10 +17,15 @@ function getUpdatedNewBook(book, body) {
         }
     }
     return newBook;
-};
+}
 
 function getResponseBody(data, statusCode) {
-    return ERROR_MESSAGES_DICT[statusCode] || { success: true, ...(data && { data }) };
+    return (
+        ERROR_MESSAGES_DICT[statusCode] || {
+            success: true,
+            ...(data && { data }),
+        }
+    );
 }
 
 function sendJsonByStatus(response, data, statusCode = 200) {
@@ -22,4 +36,5 @@ function sendJsonByStatus(response, data, statusCode = 200) {
 module.exports = {
     getUpdatedNewBook,
     sendJsonByStatus,
-}
+    compareCurrentBookWithBody,
+};

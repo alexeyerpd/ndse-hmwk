@@ -1,20 +1,21 @@
 const express = require('express');
 
-const { fileMiddleware } = require('../middleware');
-const { Book } = require('../models');
-const { sendJsonByStatus, getUpdatedNewBook } = require('../utils');
+const { fileMiddleware } = require('../../middleware');
+const { Book } = require('../../models');
+const { sendJsonByStatus, getUpdatedNewBook } = require('../../utils');
 
 const router = express.Router();
 
 const store = {
     books: [
         new Book(
-            'title',
-            'description',
-            'authors',
+            'Первая книга',
+            'Описание для первой книги',
+            'Автор 1',
+            false,
             'file name',
-            'publick\\img\\1651429602024-fon.jpg',
-            'publick\\img\\1651429602032-screen.png',
+            'public\\files\\1651952498084-book.pdf',
+            'public\\img\\1651429602024-fon.jpg',
             '3336a1e6-9c91-48e0-b374-608bba451696',
         ),
     ],
@@ -55,7 +56,7 @@ router.post(
     '/',
     fileMiddleware.fields([{ name: 'fileBook' }, { name: 'fileCover' }]),
     (req, res) => {
-        const { authors, title, description, fileName } = req.body;
+        const { authors, title, description, fileName, favorite } = req.body;
         const { fileBook: fileBooks, fileCover: fileCovers } = req.files;
 
         const fileBookPath = fileBooks?.[0]?.path;
@@ -65,6 +66,7 @@ router.post(
             title,
             description,
             authors,
+            favorite,
             fileName,
             fileBookPath,
             fileCoverPath,

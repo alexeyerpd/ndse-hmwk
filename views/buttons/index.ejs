@@ -1,0 +1,20 @@
+<% if (type === 'create') { %>
+    <a class="btn-link" href="/books/create"><%= text %></a>
+<% } else if (type === 'edit') { %> 
+    <a class="btn-link" href="/books/update/<%= id %>"><%= text %></a>
+<% } else if (type === 'download') { %>
+    <a class="btn-link btn-link--download" href="<%= href %>" download><%= text %></a>
+<% } else if (type === 'submit') { %>
+    <button class="btn btn--submit" type="submit"><%= text%></button>
+<% } else if (type === 'delete') { %>
+    <form class="btn-form btn-form--delete" action="/books/delete/<%= id %>" method="POST">
+        <button class="btn btn--delete" type="submit"><%= text%></button>
+    </form>
+<% } else if (type === 'favorite') { %>
+    <form class="btn-form btn-form" action="/books/update/<%= id %>" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="favorite" value=<%= book.favorite ? 'true' : '' %>>
+        <button class="btn btn--favorite <%= book.favorite ? 'btn--favorite-yes': '' %>" type="submit"></button>
+    </form>
+<% } else { %> 
+    <a class="btn-link" href="<%= href %>"><%= text %></a>
+<% } %> 

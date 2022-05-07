@@ -1,0 +1,9 @@
+<div class="book-preview books__item">
+    <img class="book-preview__img" src="/<%= book.fileCover %>" alt="image">
+    <a href="/books/<%= book.id %>">
+        <h2 class="book-preview__title"><%= book.title %></h2>
+    </a>
+    <div class="book-preview__favorite">
+        <%- include('../buttons/index.ejs', { type: 'favorite', book, id: book.id }) %>
+    </div>
+</div>

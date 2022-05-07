@@ -1,0 +1,19 @@
+<%- include('../partials/layout-start.ejs') %>
+<%- include('../partials/menu.ejs') %>
+
+<div class="container">
+    <div class="books">
+        <% if (books.length) {
+            books.forEach((book, i) => {
+        %>
+            <%- include('../book/preview.ejs', { book }) %>
+        <% }); } else { %>
+            <h1 class="container__title">Книг пока нет</h1>
+        <% } %>
+        <div class="books__actions">
+            <%- include('../buttons/index.ejs', { type: 'create', text: 'Добавить книгу' }) %>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/layout-end.ejs') %>

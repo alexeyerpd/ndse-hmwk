@@ -1,0 +1,52 @@
+<form class="book-create" method="POST" enctype="multipart/form-data">
+    <div class="book-create__fields">
+        <div class="book-create__field">
+            <div id="file-book-preview">
+               <a href="/<%= book.fileBook %>" id="fileBookLink">ссылка на книгу</a>
+            </div>
+            <label class="book-create__label">
+                Прикрепите книгу
+                <input class="book-create__input" type="file" name="fileBook" id="fileBook">
+            </label>
+        </div>
+        <div class="book-create__field">
+            <div id="file-cover-preview">
+                <% if (book.fileCover) { %>
+                    <img class="image-preview" src="/<%= book.fileCover %>" alt="image" id="fileCoverPreview">
+                <% } %>
+            </div>
+            <label class="book-create__label">
+                Обложка для книги
+                <input class="book-create__input" type="file" name="fileCover" id="fileCover" value="<%= book.fileCover %>">
+            </label>
+        </div>
+        <div class="book-create__field">
+            <label class="book-create__label">
+                Title
+                <input class="book-create__input" type="text" name="title" value="<%= book.title %>">
+            </label>
+        </div>
+        <div class="book-create__field">
+            <label class="book-create__label">
+                Description
+                <textarea class="book-create__textarea" name="description" id="description"><%= book.description %></textarea>
+            </label>
+        </div>
+        <div class="book-create__field">
+            <label class="book-create__label">
+                Authors
+                <input class="book-create__input" type="text" name="authors" value="<%= book.authors %>">
+            </label>
+        </div>
+        <div class="book-create__field">
+            <label class="book-create__label book-create__label--short">
+                Favorite
+                <input type="hidden" name="favorite" value=<%= book.favorite ? 'true' : '' %>>
+                <input class="book-create__input" type="checkbox" <%= book.favorite ? 'checked' : '' %>>
+            </label>
+        </div>
+    </div>
+    <div class="book-create__actions">
+        <%- include('../buttons/index.ejs', { type: 'submit', text: 'Сохранить', }) %> 
+    </div>
+</form>

@@ -1,0 +1,39 @@
+<form class="book-create" method="POST" enctype="multipart/form-data">
+    <div class="book-create__fields">
+        <div class="book-create__field">
+            <div id="file-book-preview"></div>
+            <label class="book-create__label">
+                Прикрепите книгу
+                <input class="book-create__input" type="file" name="fileBook" id="fileBook">
+            </label>
+        </div>
+        <div class="book-create__field">
+            <div id="file-cover-preview"></div>
+            <label class="book-create__label">
+                Обложка для книги
+                <input class="book-create__input" type="file" name="fileCover" id="fileCover">
+            </label>
+        </div>
+        <div class="book-create__field">
+            <label class="book-create__label">
+                Title
+                <input class="book-create__input" type="text" name="title">
+            </label>
+        </div>
+        <div class="book-create__field">
+            <label class="book-create__label">
+                Description
+                <textarea class="book-create__textarea" name="description" id="description"></textarea>
+            </label>
+        </div>
+        <div class="book-create__field">
+            <label class="book-create__label">
+                Authors
+                <input class="book-create__input" type="text" name="authors">
+            </label>
+        </div>
+    </div>
+    <div class="book-create__actions">
+        <%- include('../buttons/index.ejs', { type: 'submit', text: 'Сoздать', }) %>
+    </div>
+</form>
