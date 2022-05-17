@@ -8,16 +8,16 @@ const router = express.Router();
 
 const store = {
     books: [
-        new Book(
-            'Первая книга',
-            'Описание для первой книги',
-            'Автор 1',
-            false,
-            'file name',
-            'public\\files\\1651952498084-book.pdf',
-            'public\\img\\1651429602024-fon.jpg',
-            '3336a1e6-9c91-48e0-b374-608bba451696',
-        ),
+        // new Book(
+        //     'Первая книга',
+        //     'Описание для первой книги',
+        //     'Автор 1',
+        //     false,
+        //     'file name',
+        //     'public\\files\\1651952498084-book.pdf',
+        //     'public\\img\\1651429602024-fon.jpg',
+        //     '3336a1e6-9c91-48e0-b374-608bba451696',
+        // ),
     ],
 };
 

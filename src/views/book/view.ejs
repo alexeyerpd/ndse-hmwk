@@ -1,5 +1,6 @@
 <div class="book">
     <div class="book__left-bar">
+        <span class="book__count"><%= cnt ?? 0 %></span>
         <img class="book__img" src="/<%= book.fileCover %>" alt="image">
         <div class="book__actions">
             <%- include('../buttons/index.ejs', { type: 'download', text: 'Скачать книгу', href: `/${book.fileBook}` }) %> 

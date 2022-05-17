@@ -1,4 +1,5 @@
 const express = require('express');
+const fetch = require('node-fetch');
 const fs = require('fs');
 const path = require('path');
 
@@ -7,38 +8,40 @@ const { Book } = require('../../models');
 const { compareCurrentBookWithBody } = require('../../utils');
 const router = express.Router();
 
+const COUNTER_URL = process.env.COUNTER_URL || 'http://localhost:3002'
+
 const store = {
     books: [
-        new Book(
-            'Первая книга',
-            'Описание для первой книги',
-            'Автор 1',
-            true,
-            'file name',
-            'public\\files\\1651952498084-book.pdf',
-            'public\\img\\1651429602024-fon.jpg',
-            '3336a1e6-9c91-48e0-b374-608bba451696',
-        ),
-        new Book(
-            'Вторая книга',
-            'Описание для второй книги',
-            'Автор 2',
-            false,
-            'file name',
-            'public\\files\\1651952498084-book.pdf',
-            'public\\img\\1651429602024-fon.jpg',
-            '3336a1e6-9c91-48e0-b374-608bba451697',
-        ),
-        new Book(
-            'Третья книга',
-            'Описание для третьей книги',
-            'Автор 3',
-            false,
-            'file name',
-            'public\\files\\1651952498084-book.pdf',
-            'public\\img\\1651429602024-fon.jpg',
-            '3336a1e6-9c91-48e0-b374-608bba451698',
-        ),
+        // new Book(
+        //     'Первая книга',
+        //     'Описание для первой книги',
+        //     'Автор 1',
+        //     true,
+        //     'file name',
+        //     'public\\files\\1651952498084-book.pdf',
+        //     'public\\img\\1651429602024-fon.jpg',
+        //     '3336a1e6-9c91-48e0-b374-608bba451696',
+        // ),
+        // new Book(
+        //     'Вторая книга',
+        //     'Описание для второй книги',
+        //     'Автор 2',
+        //     false,
+        //     'file name',
+        //     'public\\files\\1651952498084-book.pdf',
+        //     'public\\img\\1651429602024-fon.jpg',
+        //     '3336a1e6-9c91-48e0-b374-608bba451697',
+        // ),
+        // new Book(
+        //     'Третья книга',
+        //     'Описание для третьей книги',
+        //     'Автор 3',
+        //     false,
+        //     'file name',
+        //     'public\\files\\1651952498084-book.pdf',
+        //     'public\\img\\1651429602024-fon.jpg',
+        //     '3336a1e6-9c91-48e0-b374-608bba451698',
+        // ),
     ],
 };
 
@@ -146,14 +149,20 @@ router.get('/', (req, res) => {
     res.render('books/index', { title: 'Список книг', books: store.books });
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const book = store.books.find((book) => book.id === id);
 
-    if (book) {
-        res.render('books/view', { title: 'Книга', book });
-    } else {
+    if (!book) {
         res.render('error/404', { title: 'Книга не найдена' });
+        return;
+    }
+
+    try {
+        const data = await fetch(`${COUNTER_URL}/counter/${id}/incr`, { method: 'POST' }).then(res => res.json());
+        res.render('books/view', { title: 'Книга', book, cnt: data.cnt });
+    } catch (e) {
+        res.render('error/404', { title: 'Ошибка redis' });
     }
 });
 

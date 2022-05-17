@@ -9,6 +9,7 @@ const { notFoundMiddleware, errorMiddleware } = require('./middleware');
 
 const app = express();
 app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
 
 const PORT = process.env.PORT || 3000;
 
@@ -30,7 +31,7 @@ app.get('/api/err', (req, res) => {
 app.use('/api/user', userApiRouter);
 app.use('/api/books', booksApiRouter);
 
-app.use('/public', express.static(path.join(path.resolve(__dirname), '/public')));
+app.use('/public', express.static(path.join(path.resolve(__dirname), '..', '/public')));
 app.use('/books', booksRouter);
 app.use('/', indexRouter);
 

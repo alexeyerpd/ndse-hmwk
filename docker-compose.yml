@@ -1,0 +1,22 @@
+services:
+  storage:
+    image: redis
+  counter:
+    image: alexeyerpd/counter
+    ports: 
+     - 3002:3002
+    environment:
+      - PORT=3002
+      - REDIS_URL=redis://storage
+    depends_on:
+      - storage
+  lib:
+    image: alexeyerpd/lib
+    ports:
+      - 80:3000
+    environment:
+      - PORT=3000
+      - COUNTER_URL=http://counter:3002
+    depends_on:
+      - storage
+      - counter

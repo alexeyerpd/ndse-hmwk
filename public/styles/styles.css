@@ -108,11 +108,18 @@
     width: 100%;
 }
 
+.book__count {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
 .book__content {
     flex-grow: 1;
 }
 
 .book__left-bar {
+    position: relative;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
