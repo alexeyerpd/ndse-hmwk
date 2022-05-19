@@ -26,3 +26,23 @@
 | POST | /api/books | создать книгу | создаем книги и возврашаем ее же вместе с присвоенным id |
 | PUT | /api/books/:id | редактировать книгу по id | редактируем объект книги, если запись не найдено вернем Code: 404 |
 | DELETE | /api/books/:id | удалить книгу по id | удаляем книгу и возвращаем ответ: 'ok'|
+
+## MongoDB
+```js
+db.books.insertMany([
+  { title: "Book title 1", description: "Book description 1", authors: "Authors 1..." },
+  { title: "Book title 2", description: "Book description 2", authors: "Authors 2..." },
+])
+```
+```js
+db.books.find({
+  { title: 'title? типа задача найти конкретную книгу по title?'},
+  { title: 1, description: 1, authors: 1 }
+})
+```
+```js
+db.books.updateOne(
+  { _id: 'id'},
+  { authors: 'new authors', description: 'new desc' }
+)
+```
