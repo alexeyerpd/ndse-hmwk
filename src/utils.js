@@ -1,14 +1,5 @@
 const { ERROR_MESSAGES_DICT } = require('./constants');
 
-function compareCurrentBookWithBody(book, body) {
-    if (Object.keys(body).length) {
-        return Object.entries(body).filter(
-            ([fieldK, fieldV]) => book[fieldK] !== fieldV,
-        );
-    }
-    return [];
-}
-
 function getUpdatedNewBook(book, body) {
     const newBook = { ...book };
     for (let [k, v] of Object.entries(body)) {
@@ -36,5 +27,4 @@ function sendJsonByStatus(response, data, statusCode = 200) {
 module.exports = {
     getUpdatedNewBook,
     sendJsonByStatus,
-    compareCurrentBookWithBody,
 };

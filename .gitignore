@@ -2,6 +2,7 @@
 node_modules/
 public/
 myPublic/
+mongoData/
 
 # dotenv environment variables file
 .env

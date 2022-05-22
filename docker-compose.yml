@@ -1,4 +1,13 @@
 services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=db
+    volumes:
+      - ./mongoData:/data/db
   storage:
     image: redis
   counter:
@@ -17,6 +26,7 @@ services:
     environment:
       - PORT=3000
       - COUNTER_URL=http://counter:3002
+      - MONGO_URL=mongodb://mongo:27017/lib
     depends_on:
       - storage
       - counter

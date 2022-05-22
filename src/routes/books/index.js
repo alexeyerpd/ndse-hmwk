@@ -5,50 +5,16 @@ const path = require('path');
 
 const fileMiddleware = require('../../middleware/file');
 const { Book } = require('../../models');
-const { compareCurrentBookWithBody } = require('../../utils');
+const { mapWebToDBBook } = require('../../mappers');
+
 const router = express.Router();
 
-const COUNTER_URL = process.env.COUNTER_URL || 'http://localhost:3002'
+const COUNTER_URL = process.env.COUNTER_URL || 'http://localhost:3002';
 
-const store = {
-    books: [
-        // new Book(
-        //     'Первая книга',
-        //     'Описание для первой книги',
-        //     'Автор 1',
-        //     true,
-        //     'file name',
-        //     'public\\files\\1651952498084-book.pdf',
-        //     'public\\img\\1651429602024-fon.jpg',
-        //     '3336a1e6-9c91-48e0-b374-608bba451696',
-        // ),
-        // new Book(
-        //     'Вторая книга',
-        //     'Описание для второй книги',
-        //     'Автор 2',
-        //     false,
-        //     'file name',
-        //     'public\\files\\1651952498084-book.pdf',
-        //     'public\\img\\1651429602024-fon.jpg',
-        //     '3336a1e6-9c91-48e0-b374-608bba451697',
-        // ),
-        // new Book(
-        //     'Третья книга',
-        //     'Описание для третьей книги',
-        //     'Автор 3',
-        //     false,
-        //     'file name',
-        //     'public\\files\\1651952498084-book.pdf',
-        //     'public\\img\\1651429602024-fon.jpg',
-        //     '3336a1e6-9c91-48e0-b374-608bba451698',
-        // ),
-    ],
-};
-
-router.get('/update/:id', (req, res) => {
+router.get('/update/:id', async (req, res) => {
     const { id } = req.params;
-    const book = store.books.find((book) => book.id === id);
 
+    const book = await Book.findById(id);
     if (book) {
         res.render('books/update', {
             title: 'Редактирование книги',
@@ -62,37 +28,35 @@ router.get('/update/:id', (req, res) => {
 router.post(
     '/update/:id',
     fileMiddleware.fields([{ name: 'fileBook' }, { name: 'fileCover' }]),
-    (req, res) => {
+    async (req, res) => {
         const { id } = req.params;
         const body = req.body;
 
-        const book = store.books.find((book) => book.id === id);
+        try {
+            const book = await Book.findById(id);
+            const updatedBook = mapWebToDBBook(body);
 
-        const fieldsForUpdate = compareCurrentBookWithBody(book, body);
-        if (fieldsForUpdate.length) {
-            for (let [k, v] of fieldsForUpdate) {
-                if (k === 'favorite') {
-                    book[k] = !v;
-                } else {
-                    book[k] = v;
+            const needFilesUpdate = Object.entries(req?.files || {});
+            if (needFilesUpdate.length) {
+                for (let [k, v] of needFilesUpdate) {
+                    const newPathToFile = v[0].path;
+                    const prevToFile = book[k];
+                    updatedBook[k] = newPathToFile;
+                    try {
+                        if (prevToFile) {
+                            fs.unlinkSync(path.resolve(prevToFile));
+                        }
+                    } catch (err) {
+                        console.error(err);
+                    }
                 }
             }
-        }
-        const needFilesUpdate = Object.entries(req?.files || {});
-        if (needFilesUpdate.length) {
-            for (let [k, v] of needFilesUpdate) {
-                const newPathToFile = v[0].path;
-                const prevToFile = book[k];
-                book[k] = newPathToFile;
-                try {
-                    fs.unlinkSync(path.resolve(prevToFile));
-                } catch (err) {
-                    console.error(err);
-                }
-            }
-        }
 
-        res.redirect(`/books/${id}`);
+            await Book.updateOne({ _id: id }, updatedBook);
+            res.redirect(`/books/${id}`);
+        } catch (e) {
+            res.redirect(`/books`);
+        }
     },
 );
 
@@ -103,14 +67,14 @@ router.get('/create', (req, res) => {
 router.post(
     '/create',
     fileMiddleware.fields([{ name: 'fileBook' }, { name: 'fileCover' }]),
-    (req, res) => {
+    async (req, res) => {
         const { authors, title, description, fileName, favorite } = req.body;
         const { fileBook: fileBooks, fileCover: fileCovers } = req.files;
 
         const fileBookPath = fileBooks?.[0]?.path;
         const fileCoverPath = fileCovers?.[0]?.path;
 
-        const book = new Book(
+        const newBook = new Book({
             title,
             description,
             authors,
@@ -118,51 +82,75 @@ router.post(
             fileName,
             fileBookPath,
             fileCoverPath,
-        );
+        });
 
-        store.books.push(book);
+        try {
+            await newBook.save();
+        } catch (e) {
+            console.log(e);
+        }
 
-        res.redirect(`/books/${book.id}`);
+        res.redirect(`/books/${newBook._id}`);
     },
 );
 
-router.post('/delete/:id', (req, res) => {
+function deleteImgIfNotEmptyPath(req, filePath) {
+    if (!filePath) return;
+
+    try {
+        fs.unlinkSync(path.join(req.rootPublicDir, filePath));
+        return true;
+    } catch (e) {
+        throw new Error('failed to delete');
+    }
+}
+
+router.post('/delete/:id', async (req, res) => {
     const { id } = req.params;
 
-    const index = store.books.findIndex((book) => book.id === id);
-    if (index !== -1) {
-        const book = store.books.splice(index, 1)[0];
-        const { fileBook, fileCover } = book;
+    try {
+        const book = await Book.findById(id);
 
-        try {
-            fs.unlinkSync(path.join(req.rootDir, fileBook));
-            fs.unlinkSync(path.join(req.rootDir, fileCover));
-        } catch (err) {
-            console.err(err);
+        if (book) {
+            const boundFn = deleteImgIfNotEmptyPath.bind(null, req);
+            [book.fileCover, book.fileBook].forEach(boundFn);
+            await Book.deleteOne({ _id: id });
         }
+        res.redirect('/books');
+    } catch (e) {
+        res.redirect(`/books/${id}`);
     }
-
-    res.redirect('/books');
-});
-
-router.get('/', (req, res) => {
-    res.render('books/index', { title: 'Список книг', books: store.books });
 });
 
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
-    const book = store.books.find((book) => book.id === id);
-
-    if (!book) {
-        res.render('error/404', { title: 'Книга не найдена' });
-        return;
-    }
 
     try {
-        const data = await fetch(`${COUNTER_URL}/counter/${id}/incr`, { method: 'POST' }).then(res => res.json());
-        res.render('books/view', { title: 'Книга', book, cnt: data.cnt });
+        const book = await Book.findById(id);
+        if (!book) {
+            res.render('error/404', { title: 'Книга не найдена' });
+            return;
+        }
+
+        try {
+            const data = await fetch(`${COUNTER_URL}/counter/${id}/incr`, {
+                method: 'POST',
+            }).then((res) => res.json());
+            res.render('books/view', { title: 'Книга', book, cnt: data.cnt });
+        } catch (e) {
+            res.render('error/404', { title: 'Ошибка redis' });
+        }
     } catch (e) {
-        res.render('error/404', { title: 'Ошибка redis' });
+        res.render('error/404', { title: 'Ошибка сервера' });
+    }
+});
+
+router.get('/', async (req, res) => {
+    try {
+        const books = await Book.find();
+        res.render('books/index', { title: 'Список книг', books: books });
+    } catch (e) {
+        res.render('error/404', { title: 'Ошибка сервера' });
     }
 });
 
