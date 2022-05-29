@@ -1,0 +1,18 @@
+<%- include('../partials/layout-start.ejs') %>
+<%- include('../partials/menu.ejs') %>
+    <div class="container">
+        <form class="login" method="POST" action="/api/user/login" enctype="multipart/form-data">
+            <label class="login__label">
+                Login
+                <input class="login__input" type="text" name="login">
+            </label>
+            <label class="login__label">
+                Password
+                <input class="login__input" type="text" name="password">
+            </label>
+            <%- include('../partials/error.ejs') %>
+            <button class="btn btn--submit login__btn" type="submit">Войти</button>
+            <a class="btn-link" href="/signup">Signup</a>
+        </form>
+    </div>
+<%- include('../partials/layout-end.ejs') %>

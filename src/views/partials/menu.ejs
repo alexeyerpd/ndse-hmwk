@@ -6,5 +6,14 @@
         <li class="navigation__item">
             <a class="navigation__link" href="/books">Books</a>
         </li>
+        <li class="navigation__item">
+            <% if (isAuth) { %>
+                <a class="navigation__link" href="/profile">Profile</a>
+                <span>/</span>
+                <a class="navigation__link" href="/api/user/logout">Logout</a>
+            <% } else { %> 
+                <a class="navigation__link" href="/login">Login</a>
+            <% } %> 
+        </li>
     </ul>
 </nav>

@@ -1,6 +1,7 @@
 # Dependency directories
 node_modules/
-public/
+public/files*
+public/img*
 myPublic/
 mongoData/
 

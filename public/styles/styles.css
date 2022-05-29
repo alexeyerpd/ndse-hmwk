@@ -38,6 +38,7 @@
 }
 
 .container {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     width: 80%;
@@ -205,6 +206,48 @@
     max-width: 100%;
     object-fit: cover;
     margin-bottom: 10px;
+}
+
+/* login */
+
+.login,
+.signup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    column-gap: 15px;
+    row-gap: 15px;
+    margin: 0 auto;
+    min-width: 320px;
+}
+
+.signup__label,
+.login__label {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.signup__input,
+.login__input {
+    display: block;
+    margin-top: 5px;
+}
+
+.signup__btn,
+.login__btn {
+    flex-grow: 0;
+}
+
+/* error */
+
+.error-block {
+    display: flex;
+    padding: 20px 30px;
+}
+
+.error-block__msg {
+    color: #ff0000;
 }
 
 /* btns */

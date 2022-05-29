@@ -10,6 +10,8 @@ services:
       - ./mongoData:/data/db
   storage:
     image: redis
+    ports:
+      - 6379:6379
   counter:
     image: alexeyerpd/counter
     ports: 
@@ -27,6 +29,7 @@ services:
       - PORT=3000
       - COUNTER_URL=http://counter:3002
       - MONGO_URL=mongodb://mongo:27017/lib
+      - REDIS_URL=redis://storage
     depends_on:
       - storage
       - counter

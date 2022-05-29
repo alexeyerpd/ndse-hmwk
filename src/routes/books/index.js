@@ -19,9 +19,10 @@ router.get('/update/:id', async (req, res) => {
         res.render('books/update', {
             title: 'Редактирование книги',
             book,
+            isAuth: req.isAuthenticated(),
         });
     } else {
-        res.render('error/404', { title: 'Книга не найдена' });
+        res.render('error/404', { title: 'Книга не найдена', isAuth: req.isAuthenticated(), });
     }
 });
 
@@ -61,7 +62,7 @@ router.post(
 );
 
 router.get('/create', (req, res) => {
-    res.render('books/create', { title: 'Создание книги' });
+    res.render('books/create', { title: 'Создание книги', isAuth: req.isAuthenticated() });
 });
 
 router.post(
@@ -128,7 +129,7 @@ router.get('/:id', async (req, res) => {
     try {
         const book = await Book.findById(id);
         if (!book) {
-            res.render('error/404', { title: 'Книга не найдена' });
+            res.render('error/404', { title: 'Книга не найдена', isAuth: req.isAuthenticated() });
             return;
         }
 
@@ -136,21 +137,21 @@ router.get('/:id', async (req, res) => {
             const data = await fetch(`${COUNTER_URL}/counter/${id}/incr`, {
                 method: 'POST',
             }).then((res) => res.json());
-            res.render('books/view', { title: 'Книга', book, cnt: data.cnt });
+            res.render('books/view', { title: 'Книга', book, cnt: data.cnt, isAuth: req.isAuthenticated() });
         } catch (e) {
-            res.render('error/404', { title: 'Ошибка redis' });
+            res.render('error/404', { title: 'Ошибка redis', isAuth: req.isAuthenticated() });
         }
     } catch (e) {
-        res.render('error/404', { title: 'Ошибка сервера' });
+        res.render('error/404', { title: 'Ошибка сервера', isAuth: req.isAuthenticated() });
     }
 });
 
 router.get('/', async (req, res) => {
     try {
         const books = await Book.find();
-        res.render('books/index', { title: 'Список книг', books: books });
+        res.render('books/index', { title: 'Список книг', books: books, isAuth: req.isAuthenticated() });
     } catch (e) {
-        res.render('error/404', { title: 'Ошибка сервера' });
+        res.render('error/404', { title: 'Ошибка сервера', isAuth: req.isAuthenticated() });
     }
 });
 

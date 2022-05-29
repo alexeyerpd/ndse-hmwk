@@ -10,7 +10,6 @@ const filterDict = {
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {
-        console.log(file, ' img dest');
         if (allowedImgTypes.includes(file.mimetype)) {
             cb(null, 'public/img');
         } else {

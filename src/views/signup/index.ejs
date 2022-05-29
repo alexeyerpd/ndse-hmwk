@@ -1,0 +1,25 @@
+<%- include('../partials/layout-start.ejs') %>
+<%- include('../partials/menu.ejs') %>
+    <div class="container">
+        <form class="signup" action="/api/user/signup" method="post" enctype="multipart/form-data">
+            <label class="signup__label">
+                Login
+                <input class="signup__input" type="text" name="login">
+            </label>
+            <label class="signup__label">
+                Password
+                <input class="signup__input" type="text" name="password">
+            </label>
+            <label class="signup__label">
+                Name
+                <input class="signup__input" type="text" name="name">
+            </label>
+            <label class="signup__label">
+                Surname
+                <input class="signup__input" type="text" name="surname">
+            </label>
+            <%- include('../partials/error.ejs') %>
+            <button class="btn btn--submit signup__btn" type="submit">Create</button>
+        </form>
+    </div>
+<%- include('../partials/layout-end.ejs') %>
