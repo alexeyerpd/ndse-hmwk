@@ -24,7 +24,10 @@ function sendJsonByStatus(response, data, statusCode = 200) {
     response.json(getResponseBody(data, statusCode));
 }
 
+const socketIOWrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+
 module.exports = {
     getUpdatedNewBook,
     sendJsonByStatus,
+    socketIOWrap,
 };

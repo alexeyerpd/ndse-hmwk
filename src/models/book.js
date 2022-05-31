@@ -8,6 +8,10 @@ const bookSchema = new Schema({
     fileName: String,
     fileBook: String,
     fileCover: String,
+    comments: [{
+        type: 'ObjectId',
+        ref: 'Comment',
+    }]
 });
 
 module.exports = model('Book', bookSchema);

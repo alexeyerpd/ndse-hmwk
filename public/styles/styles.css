@@ -239,6 +239,42 @@
     flex-grow: 0;
 }
 
+/* comments */
+
+.comments {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 40px;
+    padding: 20px 0;
+    border-top: 2px solid #c0c0c0;
+}
+
+.comments__list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+.comments__item {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    padding: 7px;
+
+    border: 1px solid #000;
+    border-radius: 8px;
+}
+
+
+.comments__label {
+    margin-top: 25px;
+}
+
+.comments__btn {
+    align-self: center;
+    margin-top: 10px;
+}
 /* error */
 
 .error-block {

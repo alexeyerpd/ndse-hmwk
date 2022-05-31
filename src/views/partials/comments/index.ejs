@@ -1,0 +1,19 @@
+<div class="comments">
+    <ul class="comments__list">
+        <% 
+            if (comments.length) { 
+                comments.map(comment => {
+        %>
+        <li class="comments__item">
+            <div class="comments__date">Создан: <%= comment.date?.toLocaleString() %></div>
+            <div class="comments__username">Автор: <%= `${comment.user.name} ${comment.user.surname}`%></div>
+            <div class="comments__text"><%= comment.text%></div>
+        </li>
+        <% }) } %>
+    </ul>
+    <label class="comments__label login__label">
+        Комментарий:
+        <input class="comments__input login__input" type="text" name="comment" id="comment-input">
+    </label>
+    <button class="btn btn--submit comments__btn" id="comment-btn-send">Добавить</button>
+</div>
